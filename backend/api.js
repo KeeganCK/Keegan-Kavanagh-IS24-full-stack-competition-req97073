@@ -13,11 +13,12 @@ const getProjects = async (req, res, next) => {
 		obj = JSON.parse(readData);
 		data = obj.projectsArray
 	} catch (err) {
-		console.log(err);
+		const error = new HttpError('Can not get products, please try again', 500);
+		return next(error);
 	}
 	
 	res.status(200).json({
-		data: data
+		data: data.reverse()
 	})
 }
 
@@ -29,6 +30,7 @@ const addProject = async (req, res, next) => {
 
 	const { productName, productOwnerName, Developers, scrumMasterName, startDate, methodology } = req.body;
 	console.log(req.body);
+	let newRecord;
 	try {	
 		const readData = fs.readFileSync('./projects.json', 'utf8');
 		obj = JSON.parse(readData); //now it an object
@@ -41,6 +43,7 @@ const addProject = async (req, res, next) => {
 			startDate,
 			methodology
 		}
+		newRecord = tempObject;
 		const isValid = jsonSchema.isValid(tempObject);
 		if(!isValid) {
 			const error = new HttpError('Input did not meet Schema, please try again', 400);
@@ -51,11 +54,14 @@ const addProject = async (req, res, next) => {
 		fs.writeFileSync('./projects.json', json, 'utf8'); 
 
 	} catch (err) {
-		console.log(err);
+		console.log('err: ', err)
+		const error = new HttpError('Could not create product, please try again', 500);
+		return next(error);
 	}
 
-	res.status(200).json({
-		message: 'Product Created'
+	res.status(201).json({
+		message: 'Product Succesfully Added',
+		record: newRecord
 	})
 }
 
@@ -81,9 +87,10 @@ const editProject = async (req, res, next) => {
 			}
 		}
 		if(!wantedProduct) {
-			const error = new HttpError('Can not find product, please try again', 400);
+			const error = new HttpError('Can not find product, please try again', 500);
 			return next(error);
 		}
+		
 		tempObject = {
 			productId: productId,
 			productName: productName ? productName : wantedProduct.productName,
@@ -103,11 +110,12 @@ const editProject = async (req, res, next) => {
 		fs.writeFileSync('./projects.json', json, 'utf8'); 
 
 	} catch (err) {
-		console.log(err);
+		const error = new HttpError('Can not edit product, please try again', 500);
+			return next(error);
 	}
 
 	res.status(200).json({
-		message: 'Product altered succesfully'
+		message: 'Product Succesfully Edited'
 	})
 }
 

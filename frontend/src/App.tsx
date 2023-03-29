@@ -13,7 +13,7 @@ const ContainerDiv = styled.div`
 function App() {
   return (
     <ContainerDiv >
-      <Titles title="List of IMB products currently being developed or maintained" />
+      <Titles title="IMB Products Currently Being Developed or Maintained" />
       <Tables />
     </ContainerDiv>
   );

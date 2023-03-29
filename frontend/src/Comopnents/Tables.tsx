@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Table } from "antd";
+import { Button, Modal, Table, notification } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import styled from "styled-components";
 import { Typography } from "antd";
 import AddProductForm from "./AddProductForm";
 import EditProductForm from "./EditProductForm";
+import './Table.css';
 
-const { Text } = Typography;
+const { Title } = Typography;
 
 const TableContainerDiv = styled.div`
   width: 80%;
@@ -35,6 +36,9 @@ const Tables = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [record, setRecord] = useState<Project>();
   const [refresh, setRefresh] = useState<boolean>();
+	const [cssClass, setCssClass] = useState<string>("")
+
+  const [api, contextHolder] = notification.useNotification();
 
   useEffect(() => {
     const getProjects = async () => {
@@ -47,8 +51,11 @@ const Tables = () => {
         }
         setTableData(responseData.data);
         setLoading(false);
-      } catch (err) {
-        console.log(err);
+      } catch (err: any) {
+        api.error({
+          message: err.message,
+          placement: "top",
+        });
         setLoading(false);
       }
     };
@@ -138,34 +145,57 @@ const Tables = () => {
     setIsEditModalOpen(false);
   };
 
+  const showNotification = (message: string) => {
+    api.success({
+      message: message,
+      placement: "top",
+    });
+  };
+
+	const changeCSS = async () => {
+		setCssClass('table-row-bordered')
+		await new Promise(res => setTimeout(res, 2500));
+		setCssClass('table-row-unbordered')
+	}
+
   return (
     <TableContainerDiv>
+      {contextHolder}
       <Table
+				rowClassName={r => r.productId === record?.productId ? cssClass : ""}
         loading={loading}
         size={"small"}
         columns={columns}
         dataSource={tableData}
+				bordered
       />
       <BottomContainerDiv>
         {tableData && (
-          <Text type="success" strong underline>
+          <Title type="success" underline level={4} >
             Total Products: {tableData.length}
-          </Text>
+          </Title>
         )}
         <Button size="large" type="primary" onClick={showModal}>
           Add a new product
         </Button>
       </BottomContainerDiv>
       <Modal
+        destroyOnClose
         title="Add a New Product"
         open={isModalOpen}
         footer={null}
         onCancel={handleCancel}
         closable
       >
-        <AddProductForm />
+        <AddProductForm
+          closeModal={handleCancel}
+          showNotification={showNotification}
+					setRecord={setRecord}
+					changeCSS={changeCSS}
+        />
       </Modal>
       <Modal
+        destroyOnClose
         title="Edit Entry"
         open={isEditModalOpen}
         footer={null}
@@ -173,7 +203,12 @@ const Tables = () => {
         closable
       >
         {record && (
-          <EditProductForm record={record} closeModal={handleCancel} />
+          <EditProductForm
+            record={record}
+            closeModal={handleCancel}
+            showNotification={showNotification}
+						changeCSS={changeCSS}
+          />
         )}
       </Modal>
     </TableContainerDiv>
