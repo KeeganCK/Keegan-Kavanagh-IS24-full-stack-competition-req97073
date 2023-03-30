@@ -1,7 +1,7 @@
 const fs = require("fs");
-const HttpError = require("./http-error");
+const HttpError = require("../http-error");
 const uuid = require("uuid");
-const myJsonSchema = require("./Schema.json");
+const myJsonSchema = require("../Schema.json");
 const { Draft07 } = require("json-schema-library");
 
 const jsonSchema = new Draft07(myJsonSchema);
@@ -26,7 +26,7 @@ const getscrumMasterProducts = async (req, res, next) => {
   let name = req.params.name;
   console.log(name);
   if (!name) {
-    const error = new HttpError("Need to enter a name", 500);
+    const error = new HttpError("Need to enter a name", 400);
     return next(error);
   }
   let data = [];
@@ -53,7 +53,7 @@ const getscrumMasterProducts = async (req, res, next) => {
 const getdeveloperProducts = async (req, res, next) => {
   let name = req.params.name;
   if (!name) {
-    const error = new HttpError("Need to enter a name", 500);
+    const error = new HttpError("Need to enter a name", 400);
     return next(error);
   }
 

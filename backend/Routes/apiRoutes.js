@@ -1,6 +1,6 @@
 const express = require('express');
 const { check } = require('express-validator');
-const api = require('./api');
+const api = require('../Controllers/api');
 const router = express.Router();
 
 router.get('/getProducts', api.getProducts);

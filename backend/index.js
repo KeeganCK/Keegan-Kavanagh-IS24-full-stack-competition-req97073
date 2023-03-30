@@ -3,13 +3,16 @@ const bodyParser = require('body-parser');
 const fs = require("fs");
 const path = require("path");
 var cors = require('cors')
+const swaggerUi = require('swagger-ui-express');
+const swagger = require('./swagger.json');
 
-const apiRouter = require('./apiRoutes.js')
+const apiRouter = require('./Routes/apiRoutes.js')
 const app = express();
 
 app.use(bodyParser.json());
 app.use(cors())
 app.use('/api', apiRouter);
+app.use("/api/api-docs", swaggerUi.serve, swaggerUi.setup(swagger));
 
 app.use((error, req, res, next) => {
 	if(req.file){

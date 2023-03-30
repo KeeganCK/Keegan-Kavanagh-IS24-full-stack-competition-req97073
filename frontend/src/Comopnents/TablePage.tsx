@@ -27,8 +27,6 @@ const BottomContainerDiv = styled.div`
   align-items: center;
 `;
 
-const TotalItemsP = styled.p``;
-
 export type Project = {
   productId: string;
   productName: string;
@@ -51,33 +49,33 @@ const TablePage = () => {
   const [searchKey, setSearchKey] = useState<string>("scrumMaster");
 
   const [api, contextHolder] = notification.useNotification();
+  const getProjects = async () => {
+    try {
+      setLoading(true);
+      let response: any;
+      if (searchValue) {
+        response = await fetch(
+          `http://localhost:3000/api/get${searchKey}Products/${searchValue}`
+        );
+      } else {
+        response = await fetch("http://localhost:3000/api/getProducts");
+      }
+      const responseData = await response.json();
+      if (!response.ok) {
+        throw new Error(responseData.message);
+      }
+      setTableData(responseData.data);
+      setLoading(false);
+    } catch (err: any) {
+      api.error({
+        message: err.message,
+        placement: "top",
+      });
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const getProjects = async () => {
-      try {
-        setLoading(true);
-        let response: any;
-        if (searchValue) {
-          response = await fetch(
-            `http://localhost:3000/api/get${searchKey}Products/${searchValue}`
-          );
-        } else {
-          response = await fetch("http://localhost:3000/api/getProducts");
-        }
-        const responseData = await response.json();
-        if (!response.ok) {
-          throw new Error(responseData.message);
-        }
-        setTableData(responseData.data);
-        setLoading(false);
-      } catch (err: any) {
-        api.error({
-          message: err.message,
-          placement: "top",
-        });
-        setLoading(false);
-      }
-    };
     getProjects();
   }, [refresh]);
 

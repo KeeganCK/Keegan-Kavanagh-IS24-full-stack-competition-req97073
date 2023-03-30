@@ -16,10 +16,6 @@ const SearchTypeContainerDiv = styled.div`
   margin-bottom: 32px;
 `;
 
-const CustomTitle = styled(Title)`
-  margin: 0 5px 0 0;
-`;
-
 const options = [
   { label: "Scrum Master", value: "scrumMaster" },
   { label: "Developer", value: "developer" },
