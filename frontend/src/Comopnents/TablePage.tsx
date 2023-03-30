@@ -5,13 +5,20 @@ import styled from "styled-components";
 import { Typography } from "antd";
 import AddProductForm from "./AddProductForm";
 import EditProductForm from "./EditProductForm";
-import './Table.css';
+import "./Table.css";
+import SearchBar from "./SearchBar";
 
 const { Title } = Typography;
 
 const TableContainerDiv = styled.div`
   width: 80%;
   margin: auto;
+`;
+
+const SearchContainerDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
 `;
 
 const BottomContainerDiv = styled.div`
@@ -29,14 +36,17 @@ export type Project = {
   methodology: string;
 };
 
-const Tables = () => {
+const TablePage = () => {
   const [tableData, setTableData] = useState<Array<Project> | undefined>();
   const [loading, setLoading] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [record, setRecord] = useState<Project>();
   const [refresh, setRefresh] = useState<boolean>();
-	const [cssClass, setCssClass] = useState<string>("")
+  const [cssClass, setCssClass] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [searchKey, setSearchKey] = useState<string>("scrumMaster");
+  
 
   const [api, contextHolder] = notification.useNotification();
 
@@ -44,7 +54,12 @@ const Tables = () => {
     const getProjects = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:3000/api/getProjects");
+        let response: any;
+        if(searchValue) {
+          response = await fetch(`http://localhost:3000/api/get${searchKey}Projects/${searchValue}`);
+        } else {
+          response = await fetch("http://localhost:3000/api/getProjects");
+        }
         const responseData = await response.json();
         if (!response.ok) {
           throw new Error(responseData.message);
@@ -152,26 +167,38 @@ const Tables = () => {
     });
   };
 
-	const changeCSS = async () => {
-		setCssClass('table-row-bordered')
-		await new Promise(res => setTimeout(res, 2500));
-		setCssClass('table-row-unbordered')
-	}
+  const showNotificationError = (message: string) => {
+    api.error({
+      message: message,
+      placement: "top",
+    });
+  };
+
+  const changeCSS = async () => {
+    setCssClass("table-row-bordered");
+    await new Promise((res) => setTimeout(res, 2500));
+    setCssClass("table-row-unbordered");
+  };
 
   return (
     <TableContainerDiv>
       {contextHolder}
+      <SearchContainerDiv>
+        <SearchBar searchKey={searchKey} setSearchKey={setSearchKey} searchValue={searchValue} setSearchValue={setSearchValue} showNotificationError={showNotificationError} setTableData={setTableData}/>
+      </SearchContainerDiv>
       <Table
-				rowClassName={r => r.productId === record?.productId ? cssClass : ""}
+        rowClassName={(r) =>
+          r.productId === record?.productId ? cssClass : ""
+        }
         loading={loading}
         size={"small"}
         columns={columns}
         dataSource={tableData}
-				bordered
+        bordered
       />
       <BottomContainerDiv>
         {tableData && (
-          <Title type="success" underline level={4} >
+          <Title type="success" underline level={4}>
             Total Products: {tableData.length}
           </Title>
         )}
@@ -190,8 +217,8 @@ const Tables = () => {
         <AddProductForm
           closeModal={handleCancel}
           showNotification={showNotification}
-					setRecord={setRecord}
-					changeCSS={changeCSS}
+          setRecord={setRecord}
+          changeCSS={changeCSS}
         />
       </Modal>
       <Modal
@@ -207,7 +234,7 @@ const Tables = () => {
             record={record}
             closeModal={handleCancel}
             showNotification={showNotification}
-						changeCSS={changeCSS}
+            changeCSS={changeCSS}
           />
         )}
       </Modal>
@@ -215,4 +242,4 @@ const Tables = () => {
   );
 };
 
-export default Tables;
+export default TablePage;

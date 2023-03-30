@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Form, Input, Select, notification, DatePicker } from "antd";
-import { Project } from "./Tables";
+import { Project } from "./TablePage";
 
 const AddProductForm = (props: {
   closeModal: () => void,

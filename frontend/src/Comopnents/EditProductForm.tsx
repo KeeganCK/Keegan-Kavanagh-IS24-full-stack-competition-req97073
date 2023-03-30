@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Button, Form, Input, Select, notification } from "antd";
-import { Project } from "./Tables";
+import { Project } from "./TablePage";
 
 const EditProductForm = (props: {
   record: Project;
