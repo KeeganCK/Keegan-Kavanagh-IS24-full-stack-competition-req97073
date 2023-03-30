@@ -27,9 +27,7 @@ const BottomContainerDiv = styled.div`
   align-items: center;
 `;
 
-const TotalItemsP = styled.p`
-  
-`
+const TotalItemsP = styled.p``;
 
 export type Project = {
   productId: string;
@@ -88,28 +86,32 @@ const TablePage = () => {
       title: "Product Number",
       dataIndex: "productId",
       key: "productId",
-      width: 150,
+      width: 120,
       ellipsis: {
         showTitle: true,
       },
+      align: "center",
     },
     {
       title: "Product Name",
       dataIndex: "productName",
       key: "productName",
-      width: 125,
+      width: 110,
+      align: "center",
     },
     {
       title: "Scrum Master",
       dataIndex: "scrumMasterName",
       key: "scrumMasterName",
-      width: 125,
+      width: 105,
+      align: "center",
     },
     {
       title: "Product Owner",
       dataIndex: "productOwnerName",
       key: "productOwnerName",
       width: 125,
+      align: "center",
     },
     {
       title: "Developers",
@@ -127,18 +129,21 @@ const TablePage = () => {
         </>
       ),
       width: 125,
+      align: "center",
     },
     {
       title: "Start Date (YYYY/MM/DD)",
       dataIndex: "startDate",
       key: "startDate",
-      width: 125,
+      width: 105,
+      align: "center",
     },
     {
       title: "Methodology",
       dataIndex: "methodology",
       key: "methodology",
-      width: 125,
+      width: 100,
+      align: "center",
     },
     {
       title: "Edit",
@@ -148,7 +153,7 @@ const TablePage = () => {
       render: (i, record) => (
         <Button onClick={() => showEditModal(record)}>Edit</Button>
       ),
-      align: 'center'
+      align: "center",
     },
   ];
 
@@ -207,8 +212,15 @@ const TablePage = () => {
         />
       </SearchContainerDiv>
       <Table
+        pagination={{ pageSize: 8 }}
         rowClassName={(r, index) =>
-          r.productId === record?.productId ? index % 2 === 0 ? `table-row-light ${cssClass}` :  `table-row-dark ${cssClass}` : index % 2 === 0 ? `table-row-light` :  `table-row-dark`
+          r.productId === record?.productId
+            ? index % 2 === 0
+              ? `table-row-light ${cssClass}`
+              : `table-row-dark ${cssClass}`
+            : index % 2 === 0
+            ? `table-row-light`
+            : `table-row-dark`
         }
         loading={loading}
         size={"small"}
@@ -219,11 +231,9 @@ const TablePage = () => {
           return (
             <BottomContainerDiv>
               {tableData && (
-                <Text strong >
-                  Total Products: {tableData.length}
-                </Text>
+                <Text strong>Total Products: {tableData.length}</Text>
               )}
-              <Button  type="primary" onClick={showModal}>
+              <Button type="primary" onClick={showModal}>
                 Add Product
               </Button>
             </BottomContainerDiv>
