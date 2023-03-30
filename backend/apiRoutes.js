@@ -3,11 +3,11 @@ const { check } = require('express-validator');
 const api = require('./api');
 const router = express.Router();
 
-router.get('/getProjects', api.getProjects);
-router.get('/getscrumMasterProjects/:name', api.getscrumMasterProjects);
-router.get('/getdeveloperProjects/:name', api.getdeveloperProjects);
+router.get('/getProducts', api.getProducts);
+router.get('/getscrumMasterProducts/:name', api.getscrumMasterProducts);
+router.get('/getdeveloperProducts/:name', api.getdeveloperProducts);
 
-router.post('/addProject', api.addProject);
-router.post('/editProject', api.editProject);
+router.post('/addProduct', api.addProduct);
+router.post('/editProduct', api.editProduct);
 
 module.exports = router;

@@ -36,7 +36,7 @@ const EditProductForm = (props: {
       if (!props.record) {
         throw new Error("No record found");
       }
-      const response = await fetch(`http://localhost:3000/api/editProject`, {
+      const response = await fetch(`http://localhost:3000/api/editProduct`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

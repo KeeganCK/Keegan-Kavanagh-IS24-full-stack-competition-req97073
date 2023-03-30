@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Input } from "antd";
+import { Button, Input } from "antd";
 import styled from "styled-components";
 import { RadioChangeEvent, Typography } from "antd";
 import { Radio } from "antd";
@@ -9,7 +9,7 @@ const { Title } = Typography;
 const { Search } = Input;
 
 const CustomSearch = styled(Search)`
-  margin: 0 0 10px 40px;
+  margin: 0 40px 10px 40px;
   width: 400px;
 `;
 
@@ -33,6 +33,8 @@ const SearchBar = (props: {
   setSearchValue: React.Dispatch<React.SetStateAction<string>>;
   searchKey: string;
   setSearchKey: React.Dispatch<React.SetStateAction<string>>;
+  refresh: boolean;
+  setRefresh:  React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -48,7 +50,7 @@ const SearchBar = (props: {
         throw new Error("Please Enter a Name");
       }
       const response = await fetch(
-        `http://localhost:3000/api/get${props.searchKey}Projects/${value}`,
+        `http://localhost:3000/api/get${props.searchKey}Products/${value}`,
         {
           method: "GET",
           headers: {
@@ -67,6 +69,12 @@ const SearchBar = (props: {
       setLoading(false);
     }
   };
+
+  const clearSearch = () => {
+    props.setSearchValue("");
+    props.setRefresh(!props.refresh)
+  }
+
   return (
     <>
       <SearchTypeContainerDiv>
@@ -83,7 +91,10 @@ const SearchBar = (props: {
         loading={loading}
         enterButton="Search"
         onSearch={getFilteredProducts}
+        value={props.searchValue}
+        onChange={(e) => props.setSearchValue(e.currentTarget.value)}
       />
+      <Button onClick={clearSearch}>Clear Search</Button>
     </>
   );
 };

@@ -6,7 +6,7 @@ const { Draft07 } = require("json-schema-library");
 
 const jsonSchema = new Draft07(myJsonSchema);
 
-const getProjects = async (req, res, next) => {
+const getProducts = async (req, res, next) => {
   let data = [];
   try {
     const readData = await fs.readFileSync("./projects.json", "utf8");
@@ -22,7 +22,7 @@ const getProjects = async (req, res, next) => {
   });
 };
 
-const getscrumMasterProjects = async (req, res, next) => {
+const getscrumMasterProducts = async (req, res, next) => {
   let name = req.params.name;
   console.log(name);
   if (!name) {
@@ -50,7 +50,7 @@ const getscrumMasterProjects = async (req, res, next) => {
   });
 };
 
-const getdeveloperProjects = async (req, res, next) => {
+const getdeveloperProducts = async (req, res, next) => {
   let name = req.params.name;
   if (!name) {
     const error = new HttpError("Need to enter a name", 500);
@@ -85,7 +85,7 @@ const getdeveloperProjects = async (req, res, next) => {
   });
 };
 
-const addProject = async (req, res, next) => {
+const addProduct = async (req, res, next) => {
   if (!req.body) {
     const error = new HttpError("Request Body not found", 500);
     return next(error);
@@ -141,7 +141,7 @@ const addProject = async (req, res, next) => {
 };
 
 // edit project
-const editProject = async (req, res, next) => {
+const editProduct = async (req, res, next) => {
   if (!req.body) {
     const error = new HttpError("Request Body not found", 500);
     return next(error);
@@ -210,8 +210,8 @@ const editProject = async (req, res, next) => {
   });
 };
 
-exports.getProjects = getProjects;
-exports.addProject = addProject;
-exports.editProject = editProject;
-exports.getscrumMasterProjects = getscrumMasterProjects;
-exports.getdeveloperProjects = getdeveloperProjects;
+exports.getProducts = getProducts;
+exports.addProduct = addProduct;
+exports.editProduct = editProduct;
+exports.getscrumMasterProducts = getscrumMasterProducts;
+exports.getdeveloperProducts = getdeveloperProducts;

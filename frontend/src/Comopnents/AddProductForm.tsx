@@ -7,6 +7,7 @@ const AddProductForm = (props: {
   showNotification: (message: string) => void,
 	setRecord: React.Dispatch<React.SetStateAction<Project | undefined>>,
   changeCSS: () => void;
+	removeSearch: () => void;
 }) => {
   const [api, contextHolder] = notification.useNotification();
   const [form] = Form.useForm();
@@ -22,7 +23,7 @@ const AddProductForm = (props: {
     const dateFormated = values.startDate.format("YYYY/MM/DD");
 
     try {
-      const response = await fetch(`http://localhost:3000/api/addProject`, {
+      const response = await fetch(`http://localhost:3000/api/addProduct`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -41,6 +42,7 @@ const AddProductForm = (props: {
         throw new Error(responseData.message);
       }
       props.closeModal();
+			props.removeSearch()
       form.resetFields();
       props.showNotification(responseData.message);
 			props.setRecord(responseData.record);

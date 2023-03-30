@@ -42,11 +42,10 @@ const TablePage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [record, setRecord] = useState<Project>();
-  const [refresh, setRefresh] = useState<boolean>();
+  const [refresh, setRefresh] = useState<boolean>(false);
   const [cssClass, setCssClass] = useState<string>("");
   const [searchValue, setSearchValue] = useState<string>("");
   const [searchKey, setSearchKey] = useState<string>("scrumMaster");
-  
 
   const [api, contextHolder] = notification.useNotification();
 
@@ -55,10 +54,12 @@ const TablePage = () => {
       try {
         setLoading(true);
         let response: any;
-        if(searchValue) {
-          response = await fetch(`http://localhost:3000/api/get${searchKey}Projects/${searchValue}`);
+        if (searchValue) {
+          response = await fetch(
+            `http://localhost:3000/api/get${searchKey}Products/${searchValue}`
+          );
         } else {
-          response = await fetch("http://localhost:3000/api/getProjects");
+          response = await fetch("http://localhost:3000/api/getProducts");
         }
         const responseData = await response.json();
         if (!response.ok) {
@@ -180,11 +181,24 @@ const TablePage = () => {
     setCssClass("table-row-unbordered");
   };
 
+  const removeSearch = () => {
+    setSearchValue("");
+  };
+
   return (
     <TableContainerDiv>
       {contextHolder}
       <SearchContainerDiv>
-        <SearchBar searchKey={searchKey} setSearchKey={setSearchKey} searchValue={searchValue} setSearchValue={setSearchValue} showNotificationError={showNotificationError} setTableData={setTableData}/>
+        <SearchBar
+          searchKey={searchKey}
+          setSearchKey={setSearchKey}
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+          showNotificationError={showNotificationError}
+          setTableData={setTableData}
+          refresh={refresh}
+          setRefresh={setRefresh}
+        />
       </SearchContainerDiv>
       <Table
         rowClassName={(r) =>
@@ -219,6 +233,7 @@ const TablePage = () => {
           showNotification={showNotification}
           setRecord={setRecord}
           changeCSS={changeCSS}
+          removeSearch={removeSearch}
         />
       </Modal>
       <Modal
