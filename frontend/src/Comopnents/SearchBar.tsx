@@ -1,20 +1,19 @@
 import React, { useState } from "react";
-import { Button, Input } from "antd";
+import { Button, Input, Select, Space } from "antd";
 import styled from "styled-components";
-import { RadioChangeEvent, Typography } from "antd";
-import { Radio } from "antd";
+import { Typography } from "antd";
 import { Project } from "./TablePage";
 
 const { Title } = Typography;
 const { Search } = Input;
 
 const CustomSearch = styled(Search)`
-  margin: 0 40px 10px 40px;
+  margin: 0 40px 0 0;
   width: 400px;
 `;
 
 const SearchTypeContainerDiv = styled.div`
-  display: flex;
+  margin-bottom: 32px;
 `;
 
 const CustomTitle = styled(Title)`
@@ -34,19 +33,20 @@ const SearchBar = (props: {
   searchKey: string;
   setSearchKey: React.Dispatch<React.SetStateAction<string>>;
   refresh: boolean;
-  setRefresh:  React.Dispatch<React.SetStateAction<boolean>>;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
-  const onChange1 = ({ target: { value } }: RadioChangeEvent) => {
+  const onChangeSelect = ( value: string ) => {
+    console.log(value)
     props.setSearchKey(value);
   };
 
   const getFilteredProducts = async (value: string) => {
     setLoading(true);
-    props.setSearchValue(value)
+    props.setSearchValue(value);
     try {
-      if(!value) {
+      if (!value) {
         throw new Error("Please Enter a Name");
       }
       const response = await fetch(
@@ -72,30 +72,25 @@ const SearchBar = (props: {
 
   const clearSearch = () => {
     props.setSearchValue("");
-    props.setRefresh(!props.refresh)
-  }
+    props.setRefresh(!props.refresh);
+  };
 
   return (
-    <>
-      <SearchTypeContainerDiv>
-        <CustomTitle level={4}>Search for: </CustomTitle>
-        <Radio.Group
-          options={options}
-          onChange={onChange1}
-          value={props.searchKey}
-          optionType="button"
+    <SearchTypeContainerDiv>
+      <Space.Compact>
+        <Select defaultValue="scrumMaster" options={options} onChange={onChangeSelect}/>
+        <CustomSearch
+          placeholder="Input Name"
+          loading={loading}
+          enterButton
+          onSearch={getFilteredProducts}
+          value={props.searchValue}
+          onChange={(e) => props.setSearchValue(e.currentTarget.value)}
         />
-      </SearchTypeContainerDiv>
-      <CustomSearch
-        placeholder="Input Name"
-        loading={loading}
-        enterButton="Search"
-        onSearch={getFilteredProducts}
-        value={props.searchValue}
-        onChange={(e) => props.setSearchValue(e.currentTarget.value)}
-      />
-      <Button onClick={clearSearch}>Clear Search</Button>
-    </>
+      </Space.Compact>
+
+      <Button type="primary" onClick={clearSearch}>Clear Search</Button>
+    </SearchTypeContainerDiv>
   );
 };
 

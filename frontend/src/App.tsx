@@ -1,7 +1,7 @@
 import React from 'react';
 import Tables from './Comopnents/TablePage';
 import styled from 'styled-components';
-import TitlePage from './Comopnents/Titles';
+import Toolbar from './Comopnents/Toolbar';
 
 const ContainerDiv = styled.div`
   width: 100%;
@@ -13,7 +13,7 @@ const ContainerDiv = styled.div`
 function App() {
   return (
     <ContainerDiv >
-      <TitlePage title="IMB Products Currently Being Developed or Maintained" />
+      <Toolbar/>
       <Tables />
     </ContainerDiv>
   );

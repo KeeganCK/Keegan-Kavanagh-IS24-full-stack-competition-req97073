@@ -8,7 +8,7 @@ import EditProductForm from "./EditProductForm";
 import "./Table.css";
 import SearchBar from "./SearchBar";
 
-const { Title } = Typography;
+const { Text } = Typography;
 
 const TableContainerDiv = styled.div`
   width: 80%;
@@ -24,7 +24,12 @@ const SearchContainerDiv = styled.div`
 const BottomContainerDiv = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
+
+const TotalItemsP = styled.p`
+  
+`
 
 export type Project = {
   productId: string;
@@ -143,6 +148,7 @@ const TablePage = () => {
       render: (i, record) => (
         <Button onClick={() => showEditModal(record)}>Edit</Button>
       ),
+      align: 'center'
     },
   ];
 
@@ -201,28 +207,32 @@ const TablePage = () => {
         />
       </SearchContainerDiv>
       <Table
-        rowClassName={(r) =>
-          r.productId === record?.productId ? cssClass : ""
+        rowClassName={(r, index) =>
+          r.productId === record?.productId ? index % 2 === 0 ? `table-row-light ${cssClass}` :  `table-row-dark ${cssClass}` : index % 2 === 0 ? `table-row-light` :  `table-row-dark`
         }
         loading={loading}
         size={"small"}
         columns={columns}
         dataSource={tableData}
         bordered
+        footer={() => {
+          return (
+            <BottomContainerDiv>
+              {tableData && (
+                <Text strong >
+                  Total Products: {tableData.length}
+                </Text>
+              )}
+              <Button  type="primary" onClick={showModal}>
+                Add Product
+              </Button>
+            </BottomContainerDiv>
+          );
+        }}
       />
-      <BottomContainerDiv>
-        {tableData && (
-          <Title type="success" underline level={4}>
-            Total Products: {tableData.length}
-          </Title>
-        )}
-        <Button size="large" type="primary" onClick={showModal}>
-          Add a new product
-        </Button>
-      </BottomContainerDiv>
       <Modal
         destroyOnClose
-        title="Add a New Product"
+        title="Add Product"
         open={isModalOpen}
         footer={null}
         onCancel={handleCancel}
@@ -238,7 +248,7 @@ const TablePage = () => {
       </Modal>
       <Modal
         destroyOnClose
-        title="Edit Entry"
+        title="Edit Product"
         open={isEditModalOpen}
         footer={null}
         onCancel={handleCancel}
