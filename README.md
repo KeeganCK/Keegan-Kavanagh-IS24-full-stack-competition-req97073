@@ -10,4 +10,4 @@ The frontend should always be started second so React can ask you to start the a
 
 ## Start using docker
 
-This is the simplest way to start this application. From the starting directory simply run ```docker-compose up --build``` to build the images. The backend should start on port 3000 (http://localhost:3000) and the frontend should start on port 3001 (http://localhost:3001). To stop the docker conatiner run ```docker-compose stop``` and to re-start the app again run ```docker-compose up```
+This is the simplest way to start this application. From the starting directory simply run ```docker-compose up --build``` to build the images. The backend should start on port 3000 (http://localhost:3000) and the frontend should start on port 3001 (http://localhost:3001). To stop the docker conatiner hit ```ctrlC``` and to re-start the app again run ```docker-compose up```
