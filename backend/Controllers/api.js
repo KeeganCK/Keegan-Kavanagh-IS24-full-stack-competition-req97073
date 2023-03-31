@@ -6,6 +6,7 @@ const { Draft07 } = require("json-schema-library");
 
 const jsonSchema = new Draft07(myJsonSchema);
 
+// Check if server is working, will show green in top right of frontend app if good, red if bad
 const healthEndpoint = async (req, res, next) => {
   res.status(200).json({
     message: 'Server is healthy'
@@ -73,6 +74,7 @@ const getdeveloperProducts = async (req, res, next) => {
   try {
     const readData = await fs.readFileSync("./projects.json", "utf8");
     obj = JSON.parse(readData);
+    //Check all entries in projects json and then check all developers to see if it matches provided name
     for (let i = 0; i < obj.projectsArray.length; i++) {
       let inDevArray = false;
       for (let j = 0; j < obj.projectsArray[i].Developers.length; j++) {
@@ -116,7 +118,7 @@ const addProduct = async (req, res, next) => {
   let newRecord;
   try {
     const readData = fs.readFileSync("./projects.json", "utf8");
-    obj = JSON.parse(readData); //now it an object
+    obj = JSON.parse(readData);
     tempObject = {
       productId: uuid.v4(),
       productName,
@@ -135,8 +137,8 @@ const addProduct = async (req, res, next) => {
       );
       return next(error);
     }
-    obj.projectsArray.push(tempObject); //add some data
-    json = JSON.stringify(obj); //convert it back to json
+    obj.projectsArray.push(tempObject);
+    json = JSON.stringify(obj); 
     fs.writeFileSync("./projects.json", json, "utf8");
   } catch (err) {
     console.log("err: ", err);
@@ -183,9 +185,10 @@ const editProduct = async (req, res, next) => {
   try {
     let wantedProduct;
     const readData = fs.readFileSync("./projects.json", "utf8");
-    obj = JSON.parse(readData); //now it an object
+    obj = JSON.parse(readData);
 
     let index = 0;
+    // Find product, if not found return an error
     for (let i = 0; i < obj.projectsArray.length; i++) {
       if (obj.projectsArray[i].productId === productId) {
         wantedProduct = obj.projectsArray[i];
@@ -200,6 +203,7 @@ const editProduct = async (req, res, next) => {
       return next(error);
     }
 
+    // Set object and reset to wantedProduct original values if none provided
     tempObject = {
       productId: productId,
       productName: productName ? productName : wantedProduct.productName,
@@ -221,8 +225,8 @@ const editProduct = async (req, res, next) => {
       );
       return next(error);
     }
-    obj.projectsArray[index] = tempObject; // change data at location
-    json = JSON.stringify(obj); //convert it back to json
+    obj.projectsArray[index] = tempObject;
+    json = JSON.stringify(obj);
     fs.writeFileSync("./projects.json", json, "utf8");
   } catch (err) {
     const error = new HttpError("Can not edit product, please try again", 500);

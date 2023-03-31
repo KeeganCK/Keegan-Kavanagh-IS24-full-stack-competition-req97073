@@ -15,7 +15,7 @@ const EditProductForm = (props: {
   const onFinish = async (values: any) => {
     setLoading(true)
     let count = 0;
-    // to ensure atleast one is filled out
+    // To ensure atleast one is filled out
     for (const value in values) {
       if (values[value]) {
         count = count + 1;

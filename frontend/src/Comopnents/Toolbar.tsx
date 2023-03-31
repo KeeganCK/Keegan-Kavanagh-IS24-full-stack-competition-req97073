@@ -37,7 +37,7 @@ const CustomTitle = styled(Title)`
 const Toolbar = () => {
   const [healthy, setHealthy] = useState<boolean>(true);
 
-  // Check endpoint to ensure server is healthy
+  // Check endpoint to ensure server is healthy will change healthy div to green (good response) or red (bad response)
   const getHealth = async () => {
     try {
       const response = await fetch("http://localhost:3000/api/healthEndpoint");

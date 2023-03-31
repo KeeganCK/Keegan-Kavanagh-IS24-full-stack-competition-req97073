@@ -13,6 +13,7 @@ const AddProductForm = (props: {
   const [api, contextHolder] = notification.useNotification();
   const [form] = Form.useForm();
 
+  // function takes info from form and sends it to API, if good it will clear modal and form and show the product added
   const onFinish = async (values: any) => {
     setLoading(true);
     const developers = [];
@@ -22,6 +23,7 @@ const AddProductForm = (props: {
       }
     }
 
+    // Ensure correct date format
     const dateFormated = values.startDate.format("YYYY/MM/DD");
 
     try {
@@ -45,7 +47,7 @@ const AddProductForm = (props: {
       }
       setLoading(false)
       props.closeModal();
-			props.removeSearch()
+			props.removeSearch() 
       form.resetFields();
       props.showNotification(responseData.message);
 			props.setRecord(responseData.record);

@@ -38,6 +38,8 @@ const SearchBar = (props: {
     props.setSearchKey(value);
   };
 
+  // Function will take searchKey (Scrum Master or Developer) and value (a name) and ask the api for a - 
+  // filtered product list then refresh the table if its a good response
   const getFilteredProducts = async (value: string) => {
     setLoading(true);
     props.setSearchValue(value);
@@ -66,6 +68,7 @@ const SearchBar = (props: {
     }
   };
 
+  // Clears search and refreshes the table so all products show up again
   const clearSearch = () => {
     props.setSearchValue("");
     props.setRefresh(!props.refresh);
@@ -84,7 +87,6 @@ const SearchBar = (props: {
           onChange={(e) => props.setSearchValue(e.currentTarget.value)}
         />
       </Space.Compact>
-
       <Button type="primary" onClick={clearSearch}>Clear Search</Button>
     </SearchTypeContainerDiv>
   );
