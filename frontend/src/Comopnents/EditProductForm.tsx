@@ -12,6 +12,7 @@ const EditProductForm = (props: {
   const [api, contextHolder] = notification.useNotification();
   const [form] = Form.useForm();
 
+  // function takes info from form and sends it to API, if good it will clear modal and form and show where the change was made
   const onFinish = async (values: any) => {
     setLoading(true)
     let count = 0;

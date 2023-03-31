@@ -101,8 +101,9 @@ const getdeveloperProducts = async (req, res, next) => {
 
 //Add a product
 const addProduct = async (req, res, next) => {
+  // If body is empty, throw an error
   if (!req.body) {
-    const error = new HttpError("Request Body not found", 500);
+    const error = new HttpError("Request Body not found", 400);
     return next(error);
   }
 
