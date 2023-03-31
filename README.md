@@ -2,8 +2,8 @@
 
 ## Cloning the repository
 
-* in your terminal run ```git clone https://github.com/KeeganCK/Keegan-Kavanagh-IS24-full-stack-competition-req97073.git```
-* cd into newly created folder
+* In your terminal run ```git clone https://github.com/KeeganCK/Keegan-Kavanagh-IS24-full-stack-competition-req97073.git```
+* ```cd``` into newly created folder
 
 ## Start app using docker
 
