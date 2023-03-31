@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 var cors = require('cors')
 const swaggerUi = require('swagger-ui-express');
-const swagger = require('./swagger.json');
+const swagger = require('./Swagger.json');
 
 const apiRouter = require('./Routes/apiRoutes.js')
 const app = express();
