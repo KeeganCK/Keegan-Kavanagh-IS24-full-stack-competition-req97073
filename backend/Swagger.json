@@ -9,6 +9,24 @@
   "host": "localhost:3000",
   "basePath": "/api",
   "paths": {
+		"/healthEndpoint": {
+			"get": {
+        "summary": "Checks health of server",
+				"responses": {
+					"200": {
+						"description": "checks if server is healthy or not and returns 200 code",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"message": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
     "/getProducts": {
       "get": {
         "summary": "Gets all products",

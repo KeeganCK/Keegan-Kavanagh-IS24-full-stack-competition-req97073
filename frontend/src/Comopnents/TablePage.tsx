@@ -117,7 +117,7 @@ const TablePage = () => {
       align: "center",
     },
     {
-      title: "Developers",
+      title: "Developer Names",
       dataIndex: "Developers",
       key: "Developers",
       render: (i, { Developers }) => (
@@ -244,7 +244,7 @@ const TablePage = () => {
                 <Text strong>Total Products: {tableData.length}</Text>
               )}
               <Button type="primary" onClick={showModal}>
-                Add Product
+                Add New Product
               </Button>
             </BottomContainerDiv>
           );
