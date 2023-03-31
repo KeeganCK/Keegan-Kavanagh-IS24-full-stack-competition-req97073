@@ -70,20 +70,6 @@ const EditProductForm = (props: {
       });
     }
   };
-
-  // if there is no other developers return true
-  const checkDevelopers = (devNumber: number): boolean => {
-    let count = 0
-    for(let i = 0; i < 5; i++) {
-      if(devNumber != i) {
-        if(props.record.Developers[i]) {
-          count = count + 1
-        }
-      }
-    } 
-    return count === 0 ? true : false
-  }
-
   return (
     <Form
       name="basic"
