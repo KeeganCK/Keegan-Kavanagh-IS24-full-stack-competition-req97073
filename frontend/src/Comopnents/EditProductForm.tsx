@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Form, Input, Select, notification } from "antd";
 import { Project } from "./TablePage";
 
@@ -8,11 +8,14 @@ const EditProductForm = (props: {
   showNotification: (message: string) => void;
   changeCSS: () => void;
 }) => {
+  const [loading, setLoading] = useState<boolean>(false)
   const [api, contextHolder] = notification.useNotification();
   const [form] = Form.useForm();
 
   const onFinish = async (values: any) => {
+    setLoading(true)
     let count = 0;
+    // to ensure atleast one is filled out
     for (const value in values) {
       if (values[value]) {
         count = count + 1;
@@ -54,11 +57,13 @@ const EditProductForm = (props: {
       if (!response.ok) {
         throw new Error(responseData.message);
       }
+      setLoading(false)
       form.resetFields();
       props.closeModal();
       props.showNotification(responseData.message);
       props.changeCSS();
     } catch (err: any) {
+      setLoading(false)
       api.error({
         message: err.message,
         placement: "top",
@@ -66,9 +71,18 @@ const EditProductForm = (props: {
     }
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    // console.log("Failed:", errorInfo);
-  };
+  // if there is no other developers return true
+  const checkDevelopers = (devNumber: number): boolean => {
+    let count = 0
+    for(let i = 0; i < 5; i++) {
+      if(devNumber != i) {
+        if(props.record.Developers[i]) {
+          count = count + 1
+        }
+      }
+    } 
+    return count === 0 ? true : false
+  }
 
   return (
     <Form
@@ -76,7 +90,6 @@ const EditProductForm = (props: {
       form={form}
       initialValues={{ remember: true }}
       onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
       {contextHolder}
@@ -85,6 +98,7 @@ const EditProductForm = (props: {
         labelCol={{ span: 6 }}
         label="Product Name"
         name="productName"
+        rules={[{ required: true, message: "Please input a Product Name" }]}
       >
         <Input />
       </Form.Item>
@@ -93,6 +107,7 @@ const EditProductForm = (props: {
         label="Scrum Master"
         name="scrumMasterName"
         initialValue={props.record.scrumMasterName}
+        rules={[{ required: true, message: "Please input a Scrum Master" }]}
       >
         <Input />
       </Form.Item>
@@ -101,6 +116,7 @@ const EditProductForm = (props: {
         labelCol={{ span: 6 }}
         label="Product Owner"
         name="productOwnerName"
+        rules={[{ required: true, message: "Please input a Product Owner" }]}
       >
         <Input />
       </Form.Item>
@@ -149,6 +165,7 @@ const EditProductForm = (props: {
         labelCol={{ span: 6 }}
         label="Methodology"
         name="methodology"
+        rules={[{ required: true, message: "Please choose a Methodology" }]}
       >
         <Select
           style={{ width: 120 }}
@@ -159,7 +176,7 @@ const EditProductForm = (props: {
         />
       </Form.Item>
       <Form.Item wrapperCol={{ offset: 6 }}>
-        <Button type="primary" htmlType="submit">
+        <Button loading={loading} type="primary" htmlType="submit">
           Save
         </Button>
       </Form.Item>

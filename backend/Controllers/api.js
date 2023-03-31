@@ -6,6 +6,13 @@ const { Draft07 } = require("json-schema-library");
 
 const jsonSchema = new Draft07(myJsonSchema);
 
+const healthEndpoint = async (req, res, next) => {
+  res.status(200).json({
+    message: 'Server is healthy'
+  });
+}
+
+// Get all products
 const getProducts = async (req, res, next) => {
   let data = [];
   try {
@@ -22,6 +29,7 @@ const getProducts = async (req, res, next) => {
   });
 };
 
+// Get products for a certain scrum master
 const getscrumMasterProducts = async (req, res, next) => {
   let name = req.params.name;
   console.log(name);
@@ -30,12 +38,14 @@ const getscrumMasterProducts = async (req, res, next) => {
     return next(error);
   }
   let data = [];
+
+  // Get data from json file and check name given to all scrum master names, if equal add to list to send back
   try {
     const readData = await fs.readFileSync("./projects.json", "utf8");
     obj = JSON.parse(readData);
     for (let i = 0; i < obj.projectsArray.length; i++) {
-			name = name.toLowerCase()
-			scrumMaster = obj.projectsArray[i].scrumMasterName.toLowerCase();
+      name = name.toLowerCase();
+      scrumMaster = obj.projectsArray[i].scrumMasterName.toLowerCase();
       if (name === scrumMaster) {
         data.push(obj.projectsArray[i]);
       }
@@ -46,10 +56,12 @@ const getscrumMasterProducts = async (req, res, next) => {
   }
 
   res.status(200).json({
+    // Reverse to get newest at the top (bottom of projects.json) same for all products arrays sent back
     data: data.reverse(),
   });
 };
 
+// Get products for a certain developer
 const getdeveloperProducts = async (req, res, next) => {
   let name = req.params.name;
   if (!name) {
@@ -85,6 +97,7 @@ const getdeveloperProducts = async (req, res, next) => {
   });
 };
 
+//Add a product
 const addProduct = async (req, res, next) => {
   if (!req.body) {
     const error = new HttpError("Request Body not found", 500);
@@ -142,8 +155,9 @@ const addProduct = async (req, res, next) => {
 
 // edit project
 const editProduct = async (req, res, next) => {
+  // If body is empty, throw an error
   if (!req.body) {
-    const error = new HttpError("Request Body not found", 500);
+    const error = new HttpError("Request Body not found", 400);
     return next(error);
   }
 
@@ -156,6 +170,16 @@ const editProduct = async (req, res, next) => {
     methodology,
   } = req.body;
   console.log(req.body);
+
+  // Checks to ensure at least on developer is there
+  if (Developers.length === 0) {
+    const error = new HttpError(
+      "Need to have at least one developer, please try again",
+      400
+    );
+    return next(error);
+  }
+
   try {
     let wantedProduct;
     const readData = fs.readFileSync("./projects.json", "utf8");
@@ -210,6 +234,7 @@ const editProduct = async (req, res, next) => {
   });
 };
 
+exports.healthEndpoint = healthEndpoint;
 exports.getProducts = getProducts;
 exports.addProduct = addProduct;
 exports.editProduct = editProduct;

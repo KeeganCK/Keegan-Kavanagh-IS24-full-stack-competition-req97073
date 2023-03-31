@@ -1,5 +1,9 @@
 # Keegan-Kavanagh-IS24-full-stack-competition-req97073
 
+## Cloing the repository
+
+* in your terminal run ```git clone https://github.com/KeeganCK/Keegan-Kavanagh-IS24-full-stack-competition-req97073.git```
+
 ## Start using docker
 
 * This is the simplest way to start this application. 

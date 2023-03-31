@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Form, Input, Select, notification, DatePicker } from "antd";
 import { Project } from "./TablePage";
 
@@ -9,10 +9,12 @@ const AddProductForm = (props: {
   changeCSS: () => void;
 	removeSearch: () => void;
 }) => {
+  const [loading, setLoading] = useState<boolean>(false)
   const [api, contextHolder] = notification.useNotification();
   const [form] = Form.useForm();
 
   const onFinish = async (values: any) => {
+    setLoading(true);
     const developers = [];
     for (let i = 1; i < 6; i++) {
       if (values["developer" + i.toString()]) {
@@ -41,6 +43,7 @@ const AddProductForm = (props: {
       if (!response.ok) {
         throw new Error(responseData.message);
       }
+      setLoading(false)
       props.closeModal();
 			props.removeSearch()
       form.resetFields();
@@ -48,24 +51,19 @@ const AddProductForm = (props: {
 			props.setRecord(responseData.record);
 			props.changeCSS()
     } catch (err: any) {
+      setLoading(false)
       api.error({
         message: err.message,
         placement: "top",
       });
     }
   };
-
-  const onFinishFailed = (errorInfo: any) => {
-    // console.log("Failed:", errorInfo);
-  };
-
   return (
     <Form
       name="basic"
       form={form}
       initialValues={{ remember: true }}
       onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
       {contextHolder}
@@ -163,7 +161,7 @@ const AddProductForm = (props: {
         />
       </Form.Item>
       <Form.Item wrapperCol={{ offset: 6 }}>
-        <Button type="primary" htmlType="submit">
+        <Button loading={loading} type="primary" htmlType="submit">
           Save
         </Button>
       </Form.Item>

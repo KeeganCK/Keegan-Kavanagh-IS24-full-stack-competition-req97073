@@ -3,6 +3,7 @@ const { check } = require('express-validator');
 const api = require('../Controllers/api');
 const router = express.Router();
 
+router.get('/healthEndpoint', api.healthEndpoint);
 router.get('/getProducts', api.getProducts);
 router.get('/getscrumMasterProducts/:name', api.getscrumMasterProducts);
 router.get('/getdeveloperProducts/:name', api.getdeveloperProducts);

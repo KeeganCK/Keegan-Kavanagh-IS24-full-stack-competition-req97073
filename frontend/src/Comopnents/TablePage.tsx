@@ -42,13 +42,17 @@ const TablePage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  // Record is one row, or one Project type object
   const [record, setRecord] = useState<Project>();
   const [refresh, setRefresh] = useState<boolean>(false);
   const [cssClass, setCssClass] = useState<string>("");
   const [searchValue, setSearchValue] = useState<string>("");
+  // scrumMaster or developer
   const [searchKey, setSearchKey] = useState<string>("scrumMaster");
 
   const [api, contextHolder] = notification.useNotification();
+
+  // This async function retrieves all products or can retreive specific products if the search is used
   const getProjects = async () => {
     try {
       setLoading(true);
@@ -61,6 +65,7 @@ const TablePage = () => {
         response = await fetch("http://localhost:3000/api/getProducts");
       }
       const responseData = await response.json();
+      //If reponse not good, throw an error
       if (!response.ok) {
         throw new Error(responseData.message);
       }
@@ -164,12 +169,14 @@ const TablePage = () => {
     setIsEditModalOpen(true);
   };
 
+  // Closes both modals and triggers refresh for useEffect to reload the products
   const handleCancel = () => {
     setRefresh(!refresh);
     setIsModalOpen(false);
     setIsEditModalOpen(false);
   };
 
+  // Generic function to show a success notification
   const showNotification = (message: string) => {
     api.success({
       message: message,
@@ -177,6 +184,7 @@ const TablePage = () => {
     });
   };
 
+  // Generic function to show an error notification
   const showNotificationError = (message: string) => {
     api.error({
       message: message,
@@ -184,12 +192,14 @@ const TablePage = () => {
     });
   };
 
+  // Animation to make border go blue glow when a product is edited or added
   const changeCSS = async () => {
     setCssClass("table-row-bordered");
     await new Promise((res) => setTimeout(res, 2500));
     setCssClass("table-row-unbordered");
   };
 
+  // Resets the search value
   const removeSearch = () => {
     setSearchValue("");
   };
@@ -211,6 +221,8 @@ const TablePage = () => {
       </SearchContainerDiv>
       <Table
         pagination={{ pageSize: 8 }}
+        // Sets every second row to darker color to easier to see rows - 
+        // and will add the blue glow border when there is a record state
         rowClassName={(r, index) =>
           r.productId === record?.productId
             ? index % 2 === 0
