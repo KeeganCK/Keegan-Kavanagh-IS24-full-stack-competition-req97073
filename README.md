@@ -1,10 +1,11 @@
 # Keegan-Kavanagh-IS24-full-stack-competition-req97073
 
-## Cloing the repository
+## Cloning the repository
 
 * in your terminal run ```git clone https://github.com/KeeganCK/Keegan-Kavanagh-IS24-full-stack-competition-req97073.git```
+* cd into newly created folder
 
-## Start using docker
+## Start app using docker
 
 * This is the simplest way to start this application. 
 * From the starting directory simply run ```docker-compose up --build``` to build the images. 
