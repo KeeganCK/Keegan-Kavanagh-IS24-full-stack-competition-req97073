@@ -9,7 +9,7 @@
 ### Start the App Using Docker
 
 * This is the simplest way to start this application. 
-* From the starting directory simply run ```docker-compose up --build``` to build the images. 
+* From the applications home directory simply run ```docker-compose up --build``` to build the images. 
 * The backend should start on port 3000 (http://localhost:3000) and the frontend should start on port 3001 (http://localhost:3001). 
 * To stop the docker container hit ```ctrlC``` and to re-start the app again run ```docker-compose up```
 
