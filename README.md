@@ -1,6 +1,6 @@
 # Keegan-Kavanagh-IS24-full-stack-competition-req97073
 
-### Cloning the Repository
+## Cloning the Repository
 
 * In your terminal run ```git clone https://github.com/KeeganCK/Keegan-Kavanagh-IS24-full-stack-competition-req97073.git```
 * ```cd``` into the newly created folder
