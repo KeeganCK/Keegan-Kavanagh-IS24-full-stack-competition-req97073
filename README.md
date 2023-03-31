@@ -25,6 +25,6 @@
 * First, change into the frontend directory using ```cd frontend```, then run ```npm install```. 
 * Lastly, run ```npm start``` to start up the app. When it prompts you to pick a different port besides 3000, say yes and it should start on port 3001 (http://localhost:3001).
 
-### Swagger
+## Swagger
 
 * Swagger docs can be found at http://localhost:3000/api/api-docs
